@@ -208,3 +208,9 @@ class OrganizationUserRemind(AdminRequiredMixin, BaseOrganizationUserRemind):
 class OrganizationUserDelete(AdminRequiredMixin, BaseOrganizationUserDelete):
     pass
 
+
+def myOrgs(request):
+    from organizations.models import OrganizationOwner
+    userOrgs = OrganizationOwner.objects.filter(organization_user=request.user)
+
+    return render_to_response("organizations/myorgs.html", {'userOrgs':userOrgs})
