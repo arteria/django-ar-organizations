@@ -1,8 +1,7 @@
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.http import Http404
+from django.shortcuts import render, redirect
 from django.utils.translation import ugettext as _
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
         DeleteView, FormView)
@@ -65,7 +64,8 @@ class BaseOrganizationUserList(OrganizationMixin, ListView):
     def get(self, request, *args, **kwargs):
         self.organization = self.get_organization()
         self.object_list = self.organization.organization_users.all()
-        context = self.get_context_data(organization_users=self.object_list,
+        context = self.get_context_data(object_list=self.object_list,
+                organization_users=self.object_list,
                 organization=self.organization)
         return self.render_to_response(context)
 
@@ -112,7 +112,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
         invitation_backend().send_reminder(self.object.user,
                 **{'domain': get_current_site(self.request),
                     'organization': self.organization, 'sender': request.user})
-        return HttpResponseRedirect(self.object.get_absolute_url())
+        return redirect(self.object)
 
 
 class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
@@ -121,11 +121,13 @@ class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
 
 class BaseOrganizationUserDelete(OrganizationUserMixin, DeleteView):
     def get_success_url(self):
-        return reverse("organizationuser_list")
+        return reverse('organization_user_list',
+                kwargs={'organization_pk': self.object.organization.pk})
 
 
 class OrganizationSignup(FormView):
-    """View that allows unregistered users to create an organization account.
+    """
+    View that allows unregistered users to create an organization account.
 
     It simply processes the form and then calls the specified registration
     backend.
@@ -138,7 +140,7 @@ class OrganizationSignup(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            return HttpResponseRedirect(reverse('organization_add'))
+            return redirect('organization_add')
         return super(OrganizationSignup, self).dispatch(request, *args,
                 **kwargs)
 
@@ -147,19 +149,17 @@ class OrganizationSignup(FormView):
             return self.success_url
         return reverse('organization_signup_success')
 
-    def form_valid(self, request):
+    def form_valid(self, form):
         """
         """
         user = self.backend.register_by_email(form.cleaned_data['email'])
-        organization = create_organization(
-                user=user, name=form.cleaned_data['name'],
+        create_organization(user=user, name=form.cleaned_data['name'],
                 slug=form.cleaned_data['slug'], is_active=False)
-        return HttpResponseRedirect(self.get_success_url())
+        return redirect(self.get_success_url())
 
 
 def signup_success(self, request):
-    return render_to_response("organizations/signup_success.html", {},
-            context_instance=RequestContext(request))
+    return render(request, "organizations/signup_success.html", {})
 
 
 class OrganizationList(BaseOrganizationList):

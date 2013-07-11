@@ -3,9 +3,21 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.1.2
-:Status: alpha
+:Version: 0.2.0
+:Status: beta
 :Author: Ben Lopatin (http://benlopatin.com)
+
+.. image:: https://secure.travis-ci.org/wellfire/django-organizations.png?branch=master
+    :alt: Build Status
+    :target: http://travis-ci.org/wellfire/django-organizations
+
+.. image:: https://pypip.in/v/django-organizations/badge.png
+    :alt: Current PyPI release
+    :target: https://crate.io/packages/django-organizations
+
+.. image:: https://pypip.in/d/django-organizations/badge.png
+    :alt: Download count
+    :target: https://crate.io/packages/django-organizations
 
 Add user-managed, multi-user groups to your Django project. Use
 django-organizations whether your site needs organizations that function like
@@ -17,6 +29,9 @@ functionality beyond the individual user.
 * Users can be belong to and own more than one organization (account, group)
 * Invitation and registration functionality is designed to be flexible to allow
   you to integrate existing invitation and registration apps
+
+Documentation is on `Read the Docs
+<http://django-organizations.readthedocs.org/en/latest/index.html>`_
 
 Installing
 ==========
@@ -59,6 +74,14 @@ backend::
 
     ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
 
+There is also a lightly tested way to use your own user model, rather than the
+default `auth.User` model. Set the `AUTH_USER_MODEL` setting to the dotted
+model name of your custom user model, following the procedure in Django 1.5::
+
+    AUTH_USER_MODEL = 'myuserapp.MyUser'
+
+**This is still experimental and your user model's API should hew close to that
+of the `auth.User` class.**
 
 Usage Overview
 ==============
@@ -121,8 +144,40 @@ for me and contributors should include:
   registration backends can be used
 * Documentation
 * Ensuring all application text is translatable
+* Python 3 readiness
+* Configurable user model (a la Django 1.5's anticipated auth.User rewrite)
 
-Please use the project's issues tracker to report bugs. Thanks!
+Please use the project's issues tracker to report bugs, doc updates, or other
+requests/suggestions.
+
+Targets
+-------
+
+The codebase is targeted at tested against:
+
+* Django 1.4.x against Python 2.6 and Python 2.7
+* Django 1.5.x against Python 2.6, Python 2.7, and Python 3.3
+* Django 1.6.x (beta) against Python 2.7 and Python 3.3
+
+Submitting
+----------
+
+These submission guidelines will make it more likely your submissions will be
+reviewed and make it into the project:
+
+* Ensure they match the project goals and are sufficiently generalized
+* Please try to follow `Django coding style
+  <https://docs.djangoproject.com/en/1.4/internals/contributing/writing-code/coding-style/>`_.
+  The code base style isn't all up to par, but I'd like it to move in that
+  direction
+* Also please try to include `good commit log messages
+  <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
+* Pull requests should include a quantity amount of code and commits that are
+  reasonable to review, are logically grouped, and based off clean feature
+  branches.
+
+Code contributions are expected to pass in all three target environments, and
+pull requests should be made from branches with passing builds.
 
 Project goals
 -------------

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 
@@ -6,6 +7,7 @@ from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
 
 
+@override_settings(USE_TZ=True)
 class ActiveManagerTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -20,6 +22,7 @@ class ActiveManagerTests(TestCase):
         self.assertEqual(2, Organization.active.get_for_user(user).count())
 
 
+@override_settings(USE_TZ=True)
 class OrgModelTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -28,6 +31,7 @@ class OrgModelTests(TestCase):
         self.kurt = User.objects.get(username="kurt")
         self.dave = User.objects.get(username="dave")
         self.krist = User.objects.get(username="krist")
+        self.duder = User.objects.get(username="duder")
         self.nirvana = Organization.objects.get(name="Nirvana")
         self.foo = Organization.objects.get(name="Foo Fighters")
 
@@ -52,10 +56,30 @@ class OrgModelTests(TestCase):
         self.assertTrue(isinstance(new_guy, OrganizationUser))
         self.assertEqual(new_guy.organization, self.foo)
 
+    def test_get_or_add_user(self):
+        """Ensure `get_or_add_user` adds a user IFF it exists"""
+        new_guy, created = self.foo.get_or_add_user(self.duder)
+        self.assertTrue(isinstance(new_guy, OrganizationUser))
+        self.assertEqual(new_guy.organization, self.foo)
+        self.assertTrue(created)
+
+        new_guy, created = self.foo.get_or_add_user(self.dave)
+        self.assertTrue(isinstance(new_guy, OrganizationUser))
+        self.assertFalse(created)
+
     def test_delete_owner(self):
         from organizations.exceptions import OwnershipRequired
         owner = self.nirvana.owner.organization_user
         self.assertRaises(OwnershipRequired, owner.delete)
+
+    def test_delete_missing_owner(self):
+        """Ensure an org user can be deleted when there is no owner"""
+        org = Organization.objects.create(name="Some test", slug="some-test")
+        # Avoid the Organization.add_user method which would make an owner
+        org_user = OrganizationUser.objects.create(user=self.kurt,
+                organization=org)
+        # Just make sure it doesn't raise an error
+        org_user.delete()
 
     def test_nonmember_owner(self):
         from organizations.exceptions import OrganizationMismatch
@@ -63,6 +87,8 @@ class OrgModelTests(TestCase):
         self.nirvana.owner = foo_user
         self.assertRaises(OrganizationMismatch, self.nirvana.owner.save)
 
+
+@override_settings(USE_TZ=True)
 class OrgDeleteTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -70,11 +96,11 @@ class OrgDeleteTests(TestCase):
     def test_delete_account(self):
         """Ensure Users are not deleted on the cascade"""
         self.assertEqual(3, OrganizationOwner.objects.all().count())
-        self.assertEqual(3, User.objects.all().count())
+        self.assertEqual(4, User.objects.all().count())
         scream = Organization.objects.get(name="Scream")
         scream.delete()
         self.assertEqual(2, OrganizationOwner.objects.all().count())
-        self.assertEqual(3, User.objects.all().count())
+        self.assertEqual(4, User.objects.all().count())
 
     def test_delete_orguser(self):
         """Ensure the user is not deleted on the cascade"""

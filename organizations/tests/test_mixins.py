@@ -2,29 +2,37 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from organizations.models import Organization, OrganizationUser
 from organizations.tests.utils import request_factory_login
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
+from django.conf.locale import tr
 
 
 class ViewStub(object):
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
+    def get_context_data(self, **kwargs):
+        return kwargs
+
     def dispatch(self, request, *args, **kwargs):
         return HttpResponse("Success")
 
 
 class OrgView(OrganizationMixin, ViewStub):
+    """A testing view class"""
     pass
 
 
 class UserView(OrganizationUserMixin, ViewStub):
+    """A testing view class"""
     pass
 
 
+@override_settings(USE_TZ=True)
 class ObjectMixinTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -43,7 +51,14 @@ class ObjectMixinTests(TestCase):
         self.assertEqual(view.get_object(), self.dave)
         self.assertEqual(view.get_organization(), self.foo)
 
+    def test_get_model(self):
+        """Ensure that the method returns the class object"""
+        self.assertEqual(Organization, OrganizationMixin().get_org_model())
+        self.assertEqual(Organization, OrganizationUserMixin().get_org_model())
+        self.assertEqual(OrganizationUser,
+                OrganizationUserMixin().get_user_model())
 
+@override_settings(USE_TZ=True)
 class AccessMixinTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -80,7 +95,8 @@ class AccessMixinTests(TestCase):
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(200, AdminView().dispatch(self.krist_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, AdminView().dispatch(self.dave_request,
+        # Superuser
+        self.assertEqual(200, AdminView().dispatch(self.dave_request,
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, AdminView().dispatch(self.dummy_request,
             organization_pk=self.nirvana.pk).status_code)
@@ -92,7 +108,8 @@ class AccessMixinTests(TestCase):
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, OwnerView().dispatch(self.krist_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, OwnerView().dispatch(self.dave_request,
+        # Superuser
+        self.assertEqual(200, OwnerView().dispatch(self.dave_request,
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, OwnerView().dispatch(self.dummy_request,
             organization_pk=self.nirvana.pk).status_code)

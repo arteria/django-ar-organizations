@@ -1,13 +1,11 @@
 from django import forms
-from django.contrib.auth.models import User
 
-from organizations.models import Organization
+from organizations.models import Organization, get_user_model
 
 
 class UserRegistrationForm(forms.ModelForm):
-    """
-    Form class for completing a user's registration and activating the User.
-    """
+    """Form class for completing a user's registration and activating the
+    User."""
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     password = forms.CharField(max_length=30, widget=forms.PasswordInput)
@@ -19,15 +17,13 @@ class UserRegistrationForm(forms.ModelForm):
         self.initial['username'] = ''
 
     class Meta:
-        model = User
+        model = get_user_model()
         exclude = ('is_staff', 'is_superuser', 'is_active', 'last_login',
                 'date_joined', 'groups', 'user_permissions')
 
 
 class OrganizationRegistrationForm(forms.ModelForm):
-    """
-    Form class for creating new organizations owned by new users.
-    """
+    """Form class for creating new organizations owned by new users."""
     email = forms.EmailField()
 
     class Meta:
