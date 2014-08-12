@@ -7,4 +7,9 @@
     <li><a href="{{ organization.get_absolute_url }}">{{ organization }}</a></li>
     {% endfor %}
 </ul>
+
+<br>
+
+<a href="{% url 'organization_add' %}">Add new organization</a>
+<br>
 {% endblock %}
