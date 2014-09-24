@@ -1,23 +1,8 @@
+ 
+django-ar-organizations
 ====================
-django-organizations
-====================
 
-:Info: Groups and multi-user account management
-:Version: 0.2.0
-:Status: beta
-:Author: Ben Lopatin (http://benlopatin.com)
-
-.. image:: https://secure.travis-ci.org/wellfire/django-organizations.png?branch=master
-    :alt: Build Status
-    :target: http://travis-ci.org/wellfire/django-organizations
-
-.. image:: https://pypip.in/v/django-organizations/badge.png
-    :alt: Current PyPI release
-    :target: https://crate.io/packages/django-organizations
-
-.. image:: https://pypip.in/d/django-organizations/badge.png
-    :alt: Download count
-    :target: https://crate.io/packages/django-organizations
+This package is an adopted and adapted version of django-organizations (https://github.com/bennylope/django-organizations)! 
 
 Add user-managed, multi-user groups to your Django project. Use
 django-organizations whether your site needs organizations that function like
@@ -39,7 +24,7 @@ Installing
 First add the application to your Python path. The easiest way is to use
 `pip`::
 
-    pip install django-organizations
+    pip install django-ar-organizations
 
 You should install by downloading the source and running::
 
@@ -157,7 +142,8 @@ The codebase is targeted at tested against:
 
 * Django 1.4.x against Python 2.6 and Python 2.7
 * Django 1.5.x against Python 2.6, Python 2.7, and Python 3.3
-* Django 1.6.x (beta) against Python 2.7 and Python 3.3
+* Django 1.6.x against Python 2.7 and Python 3.3
+* Django 1.7
 
 Submitting
 ----------
@@ -194,5 +180,5 @@ Etc.
 License
 =======
 
-Anyone is free to use or modify this software under ther terms of the BSD
+Anyone is free to use or modify this software under the terms of the BSD
 license.
