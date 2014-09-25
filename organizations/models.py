@@ -3,6 +3,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models import permalink, get_model
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
@@ -48,12 +49,12 @@ class Organization(TimeStampedModel):
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
 
-    def __str__(self):
-        return u"{0}".format(self.name)
+    def __unicode__(self):
+        return u"%s" % self.name
 
-    @permalink
     def get_absolute_url(self):
-        return ('organization_detail', (), {'organization_pk': self.pk})
+        url = reverse('organization_detail', args=[], kwargs={'organization_pk': str(self.pk)})
+        return url + "?org=%s" % self.slug
 
     def add_user(self, user, is_admin=False):
         """
@@ -125,9 +126,8 @@ class OrganizationUser(TimeStampedModel):
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
-    def __str__(self):
-        return u"{0} ({1})".format(self.name if self.user.is_active else
-                self.user.email, self.organization.name)
+    def __unicode__(self):
+        return u"%s (%s)" % (self.user.username, self.organization.name)
 
     def delete(self, using=None):
         """
@@ -167,8 +167,8 @@ class OrganizationOwner(TimeStampedModel):
         verbose_name = _("organization owner")
         verbose_name_plural = _("organization owners")
 
-    def __str__(self):
-        return u"{0}: {1}".format(self.organization, self.organization_user)
+    def __unicode__(self):
+        return u"%s (%s)" % (self.organization, self.organization_user.user.username)
 
     def save(self, *args, **kwargs):
         """
