@@ -1,5 +1,7 @@
-from organizations.models import (Organization, OrganizationUser,
-        OrganizationOwner)
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+
+from organizations.models import Organization, OrganizationUser, OrganizationOwner
 
 
 def create_organization(user, name, slug, is_active=True):
@@ -22,3 +24,61 @@ def model_field_attr(model, model_field, attr):
     """
     fields = dict([(field.name, field) for field in model._meta.fields])
     return getattr(fields[model_field], attr)
+
+
+def set_current_organization_to_session(request, org):
+    """
+    Sets the current org in request.session
+    """
+    print "setting"
+    if request.session.get('current_organization', None) is not None:  # current_org already in session
+        if request.session['current_organization'] == org.slug:  # same values, no need to update
+            request.session['current_organization_modified'] = False
+            request.session.modified = True
+            return
+    # current_org not in session or not same values
+    request.session['current_organization'] = org.slug
+    request.session['current_organization_modified'] = True
+    request.session.modified = True
+    return
+
+
+def get_current_organization(request):
+    """
+    Retuns the curreent organization Object if set in the session else None
+    """
+    current_org_slug = request.session.get('current_organization')
+    try:
+        org = Organization.objects.get(users=request.user, slug=current_org_slug)
+    except ObjectDoesNotExist:
+        org = None
+
+    return org
+
+
+def get_users_organizations(user):
+    """
+    Return a list of organizations for a given user
+    """
+    if not user or not user.is_active or not user.is_authenticated():
+        return None
+    return Organization.objects.get_for_user(user).all()
+
+
+def get_organization_members(organization):
+    """
+    returns a list of OrganizationUsers for given organization
+    """
+    return OrganizationUser.objects.filter(organization=organization)
+
+
+def get_organization_users(organization):
+    """
+    Returns a list of Users for a given organization
+    """
+    organization_users = OrganizationUser.objects.filter(organization=organization)
+    user_pk_list = []
+    for organization_user in organization_users:
+        user_pk_list.append(organization_user.user.pk)
+
+    return User.objects.filter(pk__in=user_pk_list)
