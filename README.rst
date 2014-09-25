@@ -53,6 +53,15 @@ main application URL conf as well as your chosen invitation backend URLs::
         url(r'^invitations/', include(invitation_backend().get_urls())),
     )
 
+Add `organizations.middleware.OrganizationsMiddleware`to the `MIDDLEWARE_CLASSES` this middleware stores the current Organization in ther session.::
+
+    MIDDLEWARE_CLASSES = (
+        ...
+        'organizations.middleware.OrganizationsMiddleware',
+        ...
+    )
+
+
 You can specify a different invitation backend in your project settings, and
 the `invitation_backend` function will provide the URLs defined by that
 backend::
