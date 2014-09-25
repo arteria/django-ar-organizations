@@ -53,7 +53,7 @@ main application URL conf as well as your chosen invitation backend URLs::
         url(r'^invitations/', include(invitation_backend().get_urls())),
     )
 
-Add `organizations.middleware.OrganizationsMiddleware`to the `MIDDLEWARE_CLASSES` this middleware stores the current Organization in ther session.::
+Add `organizations.middleware.OrganizationsMiddleware` to the `MIDDLEWARE_CLASSES` this middleware stores the current Organization in ther session.::
 
     MIDDLEWARE_CLASSES = (
         ...
