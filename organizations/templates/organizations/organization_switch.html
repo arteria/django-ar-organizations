@@ -1,0 +1,12 @@
+{% extends "organizations_base.html" %}
+{% block content %}
+<h1>organizations</h1>
+
+<ul>
+    {% for organization in organizations %}
+    <li><a href="{% url 'organization_switch' %}?set_org={{ organization.slug }}{% if next %}&next={{ next }}{% endif %}">{{ organization }}</a></li>
+    {% empty %}
+    You are not a Member of any orgnization, please Contect the Administrator.
+    {% endfor %}
+</ul>
+{% endblock %}

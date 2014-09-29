@@ -1,8 +1,12 @@
+from django.shortcuts import render_to_response, redirect, render
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-from django.shortcuts import render, redirect
 from django.utils.translation import ugettext as _
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
         DeleteView, FormView)
 
@@ -13,6 +17,7 @@ from organizations.forms import (OrganizationForm, OrganizationUserForm,
         OrganizationUserAddForm, OrganizationAddForm, SignUpForm)
 from organizations.utils import create_organization
 from organizations.backends import invitation_backend, registration_backend
+from organizations.utils import get_users_organizations, set_current_organization_to_session
 
 
 class BaseOrganizationList(ListView):
@@ -22,6 +27,33 @@ class BaseOrganizationList(ListView):
     def get_queryset(self):
         return super(BaseOrganizationList,
                 self).get_queryset().filter(users=self.request.user)
+
+
+@login_required
+def switch_org(request):
+    next = request.GET.get('next')
+    organization_slug = request.GET.get('set_org')
+
+    if organization_slug:
+        try:
+            organization = Organization.objects.get(users=request.user, slug=organization_slug)
+        except ObjectDoesNotExist:
+            raise(Http404)
+        set_current_organization_to_session(request, organization)
+
+        if next:
+            return HttpResponseRedirect(next)
+        else:
+            return HttpResponseRedirect('/')
+
+    organizations = get_users_organizations(request.user)
+    if not organizations:
+        raise Exception("No Organization Found for user: %s" % request.user)
+    template_name = 'organizations/organization_switch.html'
+
+    return render_to_response(template_name, {'organizations': organizations,
+                                              'next': next,
+                                             }, context_instance=RequestContext(request))
 
 
 class BaseOrganizationDetail(OrganizationMixin, DetailView):
