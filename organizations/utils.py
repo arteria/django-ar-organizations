@@ -1,7 +1,8 @@
-from organizations.models import Organization, OrganizationUser, OrganizationOwner
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
+
+from organizations.models import Organization, OrganizationUser, OrganizationOwner
 
 
 def create_organization(user, name, slug, is_active=True):
