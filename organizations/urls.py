@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     # Organization URLs
     url(r'^$', view=login_required(OrganizationList.as_view()),
         name="organization_list"),
+    url(r'^switch/$', view="organizations.views.switch_org",
+        name="organization_switch"),
     url(r'^add/$', view=login_required(OrganizationCreate.as_view()),
         name="organization_add"),
     url(r'^(?P<organization_pk>[\d]+)/$',
