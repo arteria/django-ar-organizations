@@ -1,11 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
-
-from django.http import HttpResponseRedirect, HttpResponse
 
 from organizations.models import Organization, OrganizationUser, OrganizationOwner
 
