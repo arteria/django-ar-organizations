@@ -1,5 +1,11 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
+
+from django.http import HttpResponseRedirect, HttpResponse
 
 from organizations.models import Organization, OrganizationUser, OrganizationOwner
 
@@ -30,7 +36,6 @@ def set_current_organization_to_session(request, org):
     """
     Sets the current org in request.session
     """
-    print "setting"
     if request.session.get('current_organization', None) is not None:  # current_org already in session
         if request.session['current_organization'] == org.slug:  # same values, no need to update
             request.session['current_organization_modified'] = False
@@ -45,12 +50,20 @@ def set_current_organization_to_session(request, org):
 
 def get_current_organization(request):
     """
-    Retuns the curreent organization Object if set in the session else None
+    Retuns the curreent organization Object if set in the session.
+    Else redirects to orgswitcher view or returns None if not multi client app.
     """
+    AR_CRM_MULTI_CLIENT = getattr(settings, 'AR_CRM_MULTI_CLIENT', False)
+    if not AR_CRM_MULTI_CLIENT:
+        return None
+
     current_org_slug = request.session.get('current_organization')
-    try:
-        org = Organization.objects.get(users=request.user, slug=current_org_slug)
-    except ObjectDoesNotExist:
+    if request.user.is_authenticated():
+        try:
+            org = Organization.objects.get(users=request.user, slug=current_org_slug)
+        except ObjectDoesNotExist:
+            org = None
+    else:
         org = None
 
     return org
