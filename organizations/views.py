@@ -239,4 +239,3 @@ class OrganizationUserRemind(AdminRequiredMixin, BaseOrganizationUserRemind):
 
 class OrganizationUserDelete(AdminRequiredMixin, BaseOrganizationUserDelete):
     pass
-
