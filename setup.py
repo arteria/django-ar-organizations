@@ -6,7 +6,7 @@ setup(
     author="Ben Lopatin + arteria GmbH",
     author_email="ben.lopatin@wellfireinteractive.com",
     name='django-ar-organizations',
-    version='0.2.0',
+    version='0.2.1',
     description='Group accounts for Django',
     long_description=open(os.path.join(os.path.dirname(__file__),
         'README.rst')).read(),

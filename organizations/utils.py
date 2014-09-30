@@ -28,7 +28,6 @@ def model_field_attr(model, model_field, attr):
         return getattr(fields[model_field], attr)
     except Exception, ex:
         return "ERROR " + str(ex)
-    return getattr(fields[model_field], attr)
 
 
 def set_current_organization_to_session(request, org):
