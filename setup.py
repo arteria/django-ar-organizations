@@ -1,15 +1,24 @@
-from setuptools import setup, find_packages
-import os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+from os.path import join, dirname
+from setuptools import setup, find_packages
+import organizations as app
+
+
+def long_description():
+    try:
+        return open(join(dirname(__file__), 'README.rst')).read()
+    except IOError:
+        return "LONG_DESCRIPTION Error"
 
 setup(
     author="Ben Lopatin + arteria GmbH",
     author_email="ben.lopatin@wellfireinteractive.com",
     name='django-ar-organizations',
-    version='0.2.1',
+    version=app.__version__,
     description='Group accounts for Django',
-    long_description=open(os.path.join(os.path.dirname(__file__),
-        'README.rst')).read(),
+    long_description=long_description(),
     url='https://github.com/wellfire/django-organizations/',
     license='BSD License',
     platforms=['OS Independent'],
