@@ -5,6 +5,7 @@ from django.db.models import permalink, get_model
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
+from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 from organizations.managers import OrgManager, ActiveOrgManager
@@ -21,10 +22,11 @@ def get_user_model():
     try:
         klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
     except:
-        raise ImproperlyConfigured("Your user class, {0}, is improperly defined".format(klass_string))
+        raise ImproperlyConfigured("Your user class, %s, is improperly defined" % USER_MODEL)
     return klass
 
 
+@python_2_unicode_compatible
 class Organization(TimeStampedModel):
     """
     The umbrella object with which users can be associated.
@@ -49,8 +51,8 @@ class Organization(TimeStampedModel):
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
 
-    def __unicode__(self):
-        return u"%s" % self.name
+    def __str__(self):
+        return self.name
 
     def get_absolute_url(self):
         url = reverse('organization_detail', args=[], kwargs={'organization_pk': str(self.pk)})
@@ -103,6 +105,7 @@ class Organization(TimeStampedModel):
         return True if self.organization_users.filter(user=user, is_admin=True) else False
 
 
+@python_2_unicode_compatible
 class OrganizationUser(TimeStampedModel):
     """
     ManyToMany through field relating Users to Organizations.
@@ -126,8 +129,8 @@ class OrganizationUser(TimeStampedModel):
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
-    def __unicode__(self):
-        return u"%s (%s)" % (self.user.username, self.organization.name)
+    def __str__(self):
+        return "%s (%s)" % (self.user.username, self.organization)
 
     def delete(self, using=None):
         """
@@ -153,9 +156,10 @@ class OrganizationUser(TimeStampedModel):
     def name(self):
         if hasattr(self.user, 'get_full_name'):
             return self.user.get_full_name()
-        return "{0}".format(self.user)
+        return self.user.username
 
 
+@python_2_unicode_compatible
 class OrganizationOwner(TimeStampedModel):
     """Each organization must have one and only one organization owner."""
 
@@ -167,8 +171,8 @@ class OrganizationOwner(TimeStampedModel):
         verbose_name = _("organization owner")
         verbose_name_plural = _("organization owners")
 
-    def __unicode__(self):
-        return u"%s (%s)" % (self.organization, self.organization_user.user.username)
+    def __str__(self):
+        return "%s (%s)" % (self.organization_user.user.username, self.organization)
 
     def save(self, *args, **kwargs):
         """

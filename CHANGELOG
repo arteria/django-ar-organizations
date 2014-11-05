@@ -2,6 +2,11 @@
 django-organizations
 ====================
 
+0.2.2
+-----
+
+* Python 3 compatibile Models
+
 0.1.6
 -----
 
