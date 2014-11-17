@@ -1,3 +1,4 @@
+import django
 from django.db import models
 
 
@@ -16,3 +17,6 @@ class ActiveOrgManager(OrgManager):
     def get_queryset(self):
         return super(ActiveOrgManager,
                 self).get_queryset().filter(is_active=True)
+
+    if django.VERSION < (1, 6):
+        get_query_set = get_queryset
