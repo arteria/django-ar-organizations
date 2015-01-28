@@ -17,12 +17,12 @@ class ActiveOrgManager(OrgManager):
     including only active organizations
     """
 
-    def get_queryset(self, request):
+    def get_queryset(self):
         super_ = super(ActiveOrgManager, self)
         if django.VERSION < (1, 7):
-            qs = super_.get_query_set(request)
+            qs = super_.get_query_set()
         else:
-            qs = super_.get_queryset(request)
+            qs = super_.get_queryset()
 
         return qs.filter(is_active=True)
 
