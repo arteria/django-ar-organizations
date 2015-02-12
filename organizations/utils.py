@@ -48,8 +48,9 @@ def set_current_organization_to_session(request, org):
 
 def get_current_organization(request):
     """
-    Retuns the curreent organization Object if set in the session.
-    Else redirects to orgswitcher view or returns None if not multi client app.
+    Retuns the current organization object if set in the session or
+    user is member in only one orzanization.
+    None if not multi client app.
     """
     AR_CRM_MULTI_CLIENT = getattr(settings, 'AR_CRM_MULTI_CLIENT', False)
     if not AR_CRM_MULTI_CLIENT:
