@@ -61,6 +61,10 @@ def get_current_organization(request):
             org = Organization.objects.get(users=request.user, slug=current_org_slug)
         except ObjectDoesNotExist:
             org = None
+            orgs = Organization.objects.filter(users=request.user)
+            if orgs.count() == 1:  # user is member of one organization
+                org = orgs[0]
+                set_current_organization_to_session(request, org)
     else:
         org = None
 
