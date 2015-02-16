@@ -1,6 +1,8 @@
 from django import template
 
+from organizations.models import Organization
 from organizations.utils import get_users_organizations
+
 register = template.Library()
 
 
@@ -22,3 +24,17 @@ def users_organizations(user):
         return None
     else:
         return get_users_organizations(user)
+
+
+@register.assignment_tag
+def orgname_for_slug(slug):
+    """
+    Returns organizations name for a given slug.
+    Use in Template:
+    {% load org_tags %}
+    {% orgname_for_slug request.current_organization %}
+    """
+    try:
+        return Organization.objects.get(slug=slug).name
+    except Organization.DoesNotExist:
+        return None
