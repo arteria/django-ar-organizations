@@ -17,3 +17,4 @@ matrix:
       env: DJANGO_INSTALL="Django==1.4.5"
     - python: "2.6"
       env: DJANGO_INSTALL="-e git+https://github.com/django/django.git@stable/1.6.x#egg=Django"
+
