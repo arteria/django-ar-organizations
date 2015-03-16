@@ -1,8 +1,9 @@
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from organizations.models import Organization, OrganizationUser, OrganizationOwner
+
+from compat import user_model_label as USER_MODEL # NOQA
 
 
 def create_organization(user, name, slug, is_active=True):
@@ -10,12 +11,10 @@ def create_organization(user, name, slug, is_active=True):
     Returns a new organization, also creating an initial organization user who
     is the owner.
     """
-    organization = Organization.objects.create(name=name, slug=slug,
-            is_active=is_active)
-    new_user = OrganizationUser.objects.create(organization=organization,
-            user=user, is_admin=True)
-    OrganizationOwner.objects.create(organization=organization,
-            organization_user=new_user)
+    organization = Organization.objects.create(name=name, slug=slug, is_active=is_active)
+    new_user = OrganizationUser.objects.create(organization=organization, user=user, is_admin=True)
+    OrganizationOwner.objects.create(organization=organization, organization_user=new_user)
+
     return organization
 
 
@@ -97,4 +96,4 @@ def get_organization_users(organization):
     for organization_user in organization_users:
         user_pk_list.append(organization_user.user.pk)
 
-    return User.objects.filter(pk__in=user_pk_list)
+    return USER_MODEL.objects.filter(pk__in=user_pk_list)

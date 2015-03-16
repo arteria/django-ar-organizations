@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models import permalink, get_model
@@ -10,8 +9,7 @@ from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 from organizations.managers import OrgManager, ActiveOrgManager
 
-
-USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+from compat import user_model_label as USER_MODEL # NOQA
 
 
 def get_user_model():
