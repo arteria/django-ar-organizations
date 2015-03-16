@@ -2,8 +2,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from organizations.models import Organization, OrganizationUser, OrganizationOwner
+from compat import get_user_model
 
-from compat import user_model_label as USER_MODEL # NOQA
+User = get_user_model()
 
 
 def create_organization(user, name, slug, is_active=True):
@@ -96,4 +97,4 @@ def get_organization_users(organization):
     for organization_user in organization_users:
         user_pk_list.append(organization_user.user.pk)
 
-    return USER_MODEL.objects.filter(pk__in=user_pk_list)
+    return User.objects.filter(pk__in=user_pk_list)
