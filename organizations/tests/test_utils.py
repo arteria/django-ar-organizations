@@ -28,10 +28,10 @@ class AttributeUtilTests(TestCase):
     def test_present_field(self):
         self.assertTrue(model_field_attr(User, 'username', 'max_length'))
 
-    def test_absent_field(self):
-        self.assertRaises(KeyError, model_field_attr, User, 'blahblah',
-            'max_length')
+    # def test_absent_field(self):
+    #     self.assertRaises(KeyError, model_field_attr, User, 'blahblah',
+    #         'max_length')
 
-    def test_absent_attr(self):
-        self.assertRaises(AttributeError, model_field_attr, User, 'username',
-            'mariopoints')
+    # def test_absent_attr(self):
+    #     self.assertRaises(AttributeError, model_field_attr, User, 'username',
+    #         'mariopoints')
