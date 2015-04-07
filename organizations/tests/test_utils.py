@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from django.contrib.auth.models import User
 from django.test.utils import override_settings
 
 from organizations.models import Organization
 from organizations.utils import create_organization, model_field_attr
+
+from compat import get_user_model
+
+User = get_user_model()
 
 
 @override_settings(USE_TZ=True)
