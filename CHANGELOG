@@ -5,7 +5,11 @@ django-organizations
 0.2.8
 -----
 
-* ...
+* AR_CRM_MULTI_CLIENT is True by default when calling get_current_organization
+* updated middleware to skip AR_CRM_MULTI_CLIENT check
+* updated requirements to use django-compat
+* added encoding magic line to all python files
+* added travis build status in README
 
 0.2.2
 -----
