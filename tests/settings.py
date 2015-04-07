@@ -32,4 +32,4 @@ STATIC_ROOT = MEDIA_ROOT
 
 ROOT_URLCONF = 'tests.urls'
 
-# TEMPLATE_DIRS = (join(TEST_ROOT, 'templates'),)
+TEMPLATE_DIRS = (join(TEST_ROOT, 'templates'),)
