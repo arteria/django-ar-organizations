@@ -28,7 +28,7 @@ def model_field_attr(model, model_field, attr):
     fields = dict([(field.name, field) for field in model._meta.fields])
     try:
         return getattr(fields[model_field], attr)
-    except Exception, ex:
+    except Exception as ex:
         return "ERROR " + str(ex)
 
 
