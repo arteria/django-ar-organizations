@@ -15,7 +15,8 @@ install:
   - python setup.py -q install
 
 script:
-  runtests.sh
+  ./runtests.sh
+
 
 matrix:
   exclude:
