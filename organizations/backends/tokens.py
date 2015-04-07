@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.conf import settings
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.crypto import constant_time_compare
@@ -14,12 +16,12 @@ class RegistrationTokenGenerator(PasswordResetTokenGenerator):
     method, replacing PASSWORD_RESET_TIMEOUT_DAYS from the global
     settings with REGISTRATION_TIMEOUT_DAYS from application
     settings.
-    
+
     Has the additional interface method:
         -- make_token(user): Returns a token that can be used once to do a
                             password reset for the given user.
     """
-    
+
     def check_token(self, user, token):
         """
         Check that a password reset token is correct for a given user.
@@ -44,4 +46,3 @@ class RegistrationTokenGenerator(PasswordResetTokenGenerator):
             return False
 
         return True
-

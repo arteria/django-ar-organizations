@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render_to_response, redirect, render
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse

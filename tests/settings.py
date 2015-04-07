@@ -20,7 +20,7 @@ DATABASES = {
     }
 }
 
-DATABASE_ENGINE = 'sqlite3' # older Django versions
+DATABASE_ENGINE = 'sqlite3'  # older Django versions
 
 SITE_ID = 1
 
@@ -32,5 +32,6 @@ STATIC_ROOT = MEDIA_ROOT
 
 ROOT_URLCONF = 'tests.urls'
 
-#TEMPLATE_DIRS = (join(TEST_ROOT, 'templates'),)
-
+TEMPLATE_DIRS = (
+    join(TEST_ROOT, 'templates/'),
+)

@@ -1,7 +1,10 @@
-from django.conf import settings
-from django.contrib.auth.models import User
+# -*- coding: utf-8 -*-
 
+from django.conf import settings
 from organizations.utils import model_field_attr
+from compat import get_user_model
+
+User = get_user_model()
 
 
 ORGS_INVITATION_BACKEND = getattr(settings, 'INVITATION_BACKEND',

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class OwnershipRequired(Exception):
     """
     Exception to raise if the owner is being removed before the

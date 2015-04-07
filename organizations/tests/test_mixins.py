@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.test import TestCase
@@ -113,5 +115,3 @@ class AccessMixinTests(TestCase):
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, OwnerView().dispatch(self.dummy_request,
             organization_pk=self.nirvana.pk).status_code)
-
-

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django import forms
 
 from organizations.models import Organization, get_user_model

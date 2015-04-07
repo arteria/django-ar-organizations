@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
@@ -65,4 +67,3 @@ class OrgFormTests(TestCase):
                 data={'is_admin': True})
         self.assertTrue(form.is_valid())
         form.save()
-

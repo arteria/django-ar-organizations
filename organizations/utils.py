@@ -1,8 +1,12 @@
-from django.contrib.auth.models import User
+# -*- coding: utf-8 -*-
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from organizations.models import Organization, OrganizationUser, OrganizationOwner
+from compat import get_user_model
+
+User = get_user_model()
 
 
 def create_organization(user, name, slug, is_active=True):
@@ -10,12 +14,10 @@ def create_organization(user, name, slug, is_active=True):
     Returns a new organization, also creating an initial organization user who
     is the owner.
     """
-    organization = Organization.objects.create(name=name, slug=slug,
-            is_active=is_active)
-    new_user = OrganizationUser.objects.create(organization=organization,
-            user=user, is_admin=True)
-    OrganizationOwner.objects.create(organization=organization,
-            organization_user=new_user)
+    organization = Organization.objects.create(name=name, slug=slug, is_active=is_active)
+    new_user = OrganizationUser.objects.create(organization=organization, user=user, is_admin=True)
+    OrganizationOwner.objects.create(organization=organization, organization_user=new_user)
+
     return organization
 
 
@@ -26,7 +28,7 @@ def model_field_attr(model, model_field, attr):
     fields = dict([(field.name, field) for field in model._meta.fields])
     try:
         return getattr(fields[model_field], attr)
-    except Exception, ex:
+    except Exception as ex:
         return "ERROR " + str(ex)
 
 
