@@ -1,8 +1,7 @@
- 
 django-ar-organizations
 ====================
 
-This package is an adopted and adapted version of django-organizations (https://github.com/bennylope/django-organizations)! 
+This package is an adopted and adapted version of django-organizations (https://github.com/bennylope/django-organizations)!
 
 Add user-managed, multi-user groups to your Django project. Use
 django-organizations whether your site needs organizations that function like

@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from django.utils.importlib import import_module
 
 from organizations.app_settings import (ORGS_INVITATION_BACKEND,
-        ORGS_REGISTRATION_BACKEND)
+                                        ORGS_REGISTRATION_BACKEND)
 
 
 def invitation_backend():

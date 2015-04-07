@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.decorators import user_passes_test, REDIRECT_FIELD_NAME
 from organizations.models import OrganizationUser
 

@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+
 from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
@@ -17,10 +18,6 @@ class OrganizationsMiddleware:
     """
 
     def process_request(self, request):
-        # this coud be skipped when all projects are build as Multi Client with one default Organization
-        if not getattr(settings, 'AR_CRM_MULTI_CLIENT', False):
-            return None
-
         org_slug = request.GET.get('org')
         if org_slug:
             try:

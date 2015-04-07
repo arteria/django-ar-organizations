@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 

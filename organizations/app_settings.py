@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.conf import settings
 from organizations.utils import model_field_attr
 from django.contrib.auth import get_user_model
