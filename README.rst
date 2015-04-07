@@ -2,8 +2,8 @@ django-ar-organizations
 ====================
 
 
-.. image:: https://travis-ci.org/walterrenner/django-ar-organizations.svg?branch=master
-    :target: https://travis-ci.org/walterrenner/django-ar-organizations
+.. image:: https://travis-ci.org/arteria/django-ar-organizations.svg?branch=master
+    :target: https://travis-ci.org/arteria/django-ar-organizations
 
 
 This package is an adopted and adapted version of django-organizations (https://github.com/bennylope/django-organizations)!
