@@ -34,8 +34,9 @@ setup(
     install_requires=[
         'Django>=1.4',
         'django-extensions>=0.9',
+        'django-compat>=1.0.2',
     ],
-    #test_suite='tests.runtests.runtests',
+    # test_suite='tests.runtests.runtests',
     include_package_data=True,
     packages=find_packages(exclude=["tests.tests", "tests.test_app", "tests"]),
     zip_safe=False
