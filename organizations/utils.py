@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from organizations.models import Organization, OrganizationUser, OrganizationOwner
@@ -54,15 +53,15 @@ def get_current_organization(request):
     user is member in only one orzanization.
     None if not multi client app.
     """
-    AR_CRM_MULTI_CLIENT = getattr(settings, 'AR_CRM_MULTI_CLIENT', False)
-    if not AR_CRM_MULTI_CLIENT:
+    multi_client = getattr(settings, 'AR_CRM_MULTI_CLIENT', True)
+    if not multi_client:
         return None
 
     current_org_slug = request.session.get('current_organization')
     if request.user.is_authenticated():
         try:
             org = Organization.objects.get(users=request.user, slug=current_org_slug)
-        except ObjectDoesNotExist:
+        except Organization.DoesNotExist:
             org = None
             orgs = Organization.objects.filter(users=request.user)
             if orgs.count() == 1:  # user is member of one organization
