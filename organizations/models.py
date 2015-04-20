@@ -10,6 +10,7 @@ from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 
 from compat import user_model_label as USER_MODEL  # NOQA
+from jsonfield import JSONField
 
 from organizations.managers import OrgManager, ActiveOrgManager
 
@@ -42,6 +43,9 @@ class Organization(TimeStampedModel):
             help_text=_("The name in all lowercase, suitable for URL identification"))
     users = models.ManyToManyField(USER_MODEL, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
+
+    custom_data = JSONField(blank=True, default={})
+    custom_settings = JSONField(blank=True, default={})
 
     objects = OrgManager()
     active = ActiveOrgManager()
