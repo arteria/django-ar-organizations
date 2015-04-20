@@ -34,6 +34,20 @@ You should install by downloading the source and running::
 
     $ python setup.py install
 
+
+Migrating to 0.2.10 manually
+----------------------------
+
+Update the database:
+
+    ALTER TABLE `organizations_organization` add   `custom_data` longtext NOT NULL after is_active;
+    ALTER TABLE `organizations_organization` add   `custom_settings` longtext NOT NULL after custom_data;
+
+and set an empty dictionary as default value
+
+    update organizations_organization  set custom_settings='{}', custom_data='{}' where id > 0 ;
+
+
 Configuring
 -----------
 
