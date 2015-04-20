@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from django.core.exceptions import ImproperlyConfigured
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import permalink, get_model
-from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
-
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
-from organizations.managers import OrgManager, ActiveOrgManager
 
-from compat import user_model_label as USER_MODEL # NOQA
+from compat import user_model_label as USER_MODEL  # NOQA
+
+from organizations.managers import OrgManager, ActiveOrgManager
 
 
 def get_user_model():
