@@ -8,6 +8,21 @@ from compat import get_user_model
 User = get_user_model()
 
 def skip_request(request):
+    """ 
+    ORGANIZATIONS_SKIP_REQUEST_GATE
+    
+    define a dotted path to a method that returns True or False 
+    
+    True = skip, no org switcher/setter
+    False = go on... 
+    
+    
+    """
+    if getattr(settings, "ORGANIZATIONS_SKIP_REQUEST_GATE", None) is not None:
+        mod_name, func_name = getattr(settings, "ORGANIZATIONS_SKIP_REQUEST_GATE", '').rsplit('.', 1)
+        mod = importlib.import_module(mod_name)
+        func = getattr(mod, func_name)
+        return func(request)
     return False
 
 def create_organization(user, name, slug, is_active=True):
