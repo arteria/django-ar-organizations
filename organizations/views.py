@@ -26,13 +26,12 @@ class BaseOrganizationList(ListView):
     context_object_name = "organizations"
 
     def get_queryset(self):
-        return super(BaseOrganizationList,
-                self).get_queryset().filter(users=self.request.user)
+        return super(BaseOrganizationList, self).get_queryset().filter(users=self.request.user)
 
 
 @login_required
 def switch_org(request):
-    next = request.GET.get('next')
+    next = request.GET.get('next', None)
     organization_slug = request.GET.get('set_org')
 
     if organization_slug:
@@ -49,15 +48,16 @@ def switch_org(request):
     organizations = get_users_organizations(request.user)
     if not organizations:
         # fallback /auto-set
+        
         if getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', False):
             organization = Organization.objects.get(slug=getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
             organization.get_or_add_user(request.user, is_admin=False)
             set_current_organization_to_session(request, organization)
             
             if next:
-                return HttpResponseRedirect(next)
+                return HttpResponseRedirect(next + "?set_org=" + getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
             else:
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/?set_org=' getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
                 
         else:
             raise Exception("No Organization found for user: %s" % request.user)
