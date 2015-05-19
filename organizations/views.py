@@ -55,9 +55,9 @@ def switch_org(request):
             set_current_organization_to_session(request, organization)
             
             if next:
-                return HttpResponseRedirect(next + "?set_org=" + getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
+                return HttpResponseRedirect(next + "?org=" + getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
             else:
-                return HttpResponseRedirect('/?set_org='+ getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
+                return HttpResponseRedirect('/?org='+ getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
                 
         else:
             raise Exception("No Organization found for user: %s" % request.user)
