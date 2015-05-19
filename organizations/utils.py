@@ -19,6 +19,7 @@ def skip_request(request):
     
     """
     if getattr(settings, "ORGANIZATIONS_SKIP_REQUEST_GATE", None) is not None:
+        import importlib
         mod_name, func_name = getattr(settings, "ORGANIZATIONS_SKIP_REQUEST_GATE", '').rsplit('.', 1)
         mod = importlib.import_module(mod_name)
         func = getattr(mod, func_name)
