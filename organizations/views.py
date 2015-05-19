@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
         DeleteView, FormView)
+from django.conf import settings
 
 from organizations.models import Organization
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
@@ -47,7 +48,12 @@ def switch_org(request):
             return HttpResponseRedirect(next)
         else:
             return HttpResponseRedirect('/')
-
+    elif getattr(settings, 'ALLOW_USER_WITHOUT_ORGANIZATION', False):
+        if next:
+            return HttpResponseRedirect(next)
+        else:
+            return HttpResponseRedirect('/')
+            
     organizations = get_users_organizations(request.user)
     if not organizations:
         raise Exception("No Organization Found for user: %s" % request.user)
