@@ -2,6 +2,11 @@
 django-organizations
 ====================
 
+0.2.12
+
+* AUTO_ADD_USER_TO_ORG_ORGANIZATION adds the user to this org (definded by slug) automatically, if this "fallback" is not set, a
+"No Organization found for user" Exception will be raised.
+
 0.2.8
 -----
 

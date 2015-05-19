@@ -14,10 +14,8 @@ from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
 from django.conf import settings
 
 from organizations.models import Organization
-from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
-        MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
-from organizations.forms import (OrganizationForm, OrganizationUserForm,
-        OrganizationUserAddForm, OrganizationAddForm, SignUpForm)
+from organizations.mixins import (OrganizationMixin, OrganizationUserMixin, MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
+from organizations.forms import (OrganizationForm, OrganizationUserForm, OrganizationUserAddForm, OrganizationAddForm, SignUpForm)
 from organizations.utils import create_organization
 from organizations.backends import invitation_backend, registration_backend
 from organizations.utils import get_users_organizations, set_current_organization_to_session
@@ -48,15 +46,13 @@ def switch_org(request):
             return HttpResponseRedirect(next)
         else:
             return HttpResponseRedirect('/')
-    elif getattr(settings, 'ALLOW_USER_WITHOUT_ORGANIZATION', False):
-        if next:
-            return HttpResponseRedirect(next)
-        else:
-            return HttpResponseRedirect('/')
-            
     organizations = get_users_organizations(request.user)
     if not organizations:
-        raise Exception("No Organization Found for user: %s" % request.user)
+        if getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', False):
+            organization = Organization.objects.get(users=request.user, slug=getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
+            organization.get_or_add_user(request.user, is_admin=False)
+        else:
+            raise Exception("No Organization found for user: %s" % request.user)
     template_name = 'organizations/organization_switch.html'
 
     return render_to_response(template_name, {'organizations': organizations,
