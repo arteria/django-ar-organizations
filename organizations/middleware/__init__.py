@@ -17,6 +17,8 @@ class OrganizationsMiddleware:
     """
 
     def process_request(self, request):
+        return
+        
         org_slug = request.GET.get('org')
         if org_slug:
             try:

@@ -39,7 +39,6 @@ def switch_org(request):
         except ObjectDoesNotExist:
             raise(Http404)
         set_current_organization_to_session(request, organization)
-
         if next:
             return HttpResponseRedirect(next)
         else:
