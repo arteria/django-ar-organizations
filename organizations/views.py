@@ -49,7 +49,7 @@ def switch_org(request):
     organizations = get_users_organizations(request.user)
     if not organizations:
         if getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', False):
-            organization = Organization.objects.get(users=request.user, slug=getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
+            organization = Organization.objects.get(slug=getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
             organization.get_or_add_user(request.user, is_admin=False)
         else:
             raise Exception("No Organization found for user: %s" % request.user)
