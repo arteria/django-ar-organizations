@@ -9,8 +9,7 @@ from django.utils.translation import ugettext as _
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
-        DeleteView, FormView)
+from django.views.generic import (ListView, DetailView, UpdateView, CreateView, DeleteView, FormView)
 from django.conf import settings
 
 from organizations.models import Organization
@@ -47,20 +46,7 @@ def switch_org(request):
             return HttpResponseRedirect('/')
     organizations = get_users_organizations(request.user)
     if not organizations:
-        # fallback /auto-set
-        
-        if getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', False):
-            organization = Organization.objects.get(slug=getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
-            organization.get_or_add_user(request.user, is_admin=False)
-            set_current_organization_to_session(request, organization)
-            
-            if next:
-                return HttpResponseRedirect(next + "?org=" + getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
-            else:
-                return HttpResponseRedirect('/?org='+ getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
-                
-        else:
-            raise Exception("No Organization found for user: %s" % request.user)
+        raise Exception("No Organization found for user: %s" % request.user)
     template_name = 'organizations/organization_switch.html'
 
     return render_to_response(template_name, {'organizations': organizations,
