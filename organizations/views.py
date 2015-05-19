@@ -45,7 +45,20 @@ def switch_org(request):
             return HttpResponseRedirect('/')
     organizations = get_users_organizations(request.user)
     if not organizations:
-        raise Exception("No Organization found for user: %s" % request.user)
+        # fallback /auto-set
+        
+        if getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', False):
+            organization = Organization.objects.get(slug=getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
+            organization.get_or_add_user(request.user, is_admin=False)
+            set_current_organization_to_session(request, organization)
+            
+            if next:
+                return HttpResponseRedirect(next + "?org=" + getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
+            else:
+                return HttpResponseRedirect('/?org='+ getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
+                
+        else:
+            raise Exception("No Organization found for user: %s" % request.user)
     template_name = 'organizations/organization_switch.html'
 
     return render_to_response(template_name, {'organizations': organizations,
