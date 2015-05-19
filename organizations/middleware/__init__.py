@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 
 from organizations.models import Organization
-from organizations.utils import set_current_organization_to_session, get_current_organization
+from organizations.utils import set_current_organization_to_session, get_current_organization, skip_or_process
 
 
 class OrganizationsMiddleware:
@@ -17,7 +17,9 @@ class OrganizationsMiddleware:
     """
 
     def process_request(self, request):
-        return
+        
+        if skip_request(request):
+            return None
         
         org_slug = request.GET.get('org')
         if org_slug:

@@ -7,6 +7,8 @@ from compat import get_user_model
 
 User = get_user_model()
 
+def skip_or_process(request):
+    return False
 
 def create_organization(user, name, slug, is_active=True):
     """
