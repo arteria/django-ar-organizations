@@ -76,6 +76,7 @@ def get_current_organization(request):
         return None
 
     current_org_slug = request.session.get('current_organization')
+    org = None
     if request.user.is_authenticated():
         try:
             org = Organization.objects.get(users=request.user, slug=current_org_slug)
@@ -93,9 +94,6 @@ def get_current_organization(request):
                 set_current_organization_to_session(request, org)
             except Organization.DoesNotExist:
                 org = None
-    else:
-        org = None
-
     return org
 
 
