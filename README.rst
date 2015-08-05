@@ -209,3 +209,11 @@ License
 
 Anyone is free to use or modify this software under the terms of the BSD
 license.
+
+
+Specific settings
+===
+
+* ``AR_FALLBACK_ORG_SLUG`` - allow to define a fallback organization for anonymous users
+* ``AR_CRM_MULTI_CLIENT`` - arteria internal 
+

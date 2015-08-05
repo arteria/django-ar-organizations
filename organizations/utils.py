@@ -68,7 +68,7 @@ def set_current_organization_to_session(request, org):
 def get_current_organization(request):
     """
     Retuns the current organization object if set in the session or
-    user is member in only one orzanization.
+    user is member in only one organization.
     None if not multi client app.
     """
     multi_client = getattr(settings, 'AR_CRM_MULTI_CLIENT', True)
@@ -85,6 +85,14 @@ def get_current_organization(request):
             if orgs.count() == 1:  # user is member of one organization
                 org = orgs[0]
                 set_current_organization_to_session(request, org)
+    elif request.user.is_anonymous():
+        fallback_slug = getattr(settings, 'AR_FALLBACK_ORG_SLUG', None)
+        if fallback_slug is not None:
+            try:
+                org = Organization.objects.get(slug=fallback_slug)
+                set_current_organization_to_session(request, org)
+            except Organization.DoesNotExist:
+                org = None
     else:
         org = None
 
