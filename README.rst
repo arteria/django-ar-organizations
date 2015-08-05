@@ -212,7 +212,7 @@ license.
 
 
 Specific settings
-===
+=================
 
 * ``AR_FALLBACK_ORG_SLUG`` - allow to define a fallback organization for anonymous users
 * ``AR_CRM_MULTI_CLIENT`` - arteria internal 
