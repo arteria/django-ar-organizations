@@ -35,7 +35,7 @@ setup(
         'Django>=1.4',
         'django-extensions>=0.9',
         'django-compat>=1.0.2',
-        'jsonfield>=1.0.3',
+        'jsonfield>=1.0.2',
     ],
     # test_suite='tests.runtests.runtests',
     include_package_data=True,
