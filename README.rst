@@ -217,3 +217,17 @@ Specific settings
 * ``AR_FALLBACK_ORG_SLUG`` - allow to define a fallback organization for anonymous users
 * ``AR_CRM_MULTI_CLIENT`` - arteria internal 
 
+
+Q&A
+===
+
+Q: Gettting a ``SimpleLazyObject`` error  
+----------------------------------------
+ 
+    TypeError at /dummy/
+    int() argument must be a string or a number, not 'SimpleLazyObject'
+
+A:
+-- 
+Did you specify ``AR_FALLBACK_ORG_SLUG`` in your project settings?
+
