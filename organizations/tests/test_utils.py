@@ -3,10 +3,8 @@
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from organizations.models import Organization
+from organizations.models import Organization, get_user_model
 from organizations.utils import create_organization, model_field_attr
-
-from compat import get_user_model
 
 User = get_user_model()
 

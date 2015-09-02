@@ -2,21 +2,19 @@
 
 from django.conf import settings
 
-from organizations.models import Organization, OrganizationUser, OrganizationOwner
-from compat import get_user_model
+from organizations.models import Organization, OrganizationUser, OrganizationOwner, get_user_model
 
 User = get_user_model()
 
+
 def skip_request(request):
-    """ 
+    """
     ORGANIZATIONS_SKIP_REQUEST_GATE
-    
-    define a dotted path to a method that returns True or False 
-    
+
+    define a dotted path to a method that returns True or False
+
     True = skip, no org switcher/setter
-    False = go on... 
-    
-    
+    False = go on...
     """
     if getattr(settings, "ORGANIZATIONS_SKIP_REQUEST_GATE", None) is not None:
         import importlib
@@ -25,6 +23,7 @@ def skip_request(request):
         func = getattr(mod, func_name)
         return func(request)
     return False
+
 
 def create_organization(user, name, slug, is_active=True):
     """

@@ -2,7 +2,7 @@
 
 from django.conf import settings
 from organizations.utils import model_field_attr
-from compat import get_user_model
+from organizations.models import get_user_model
 
 User = get_user_model()
 

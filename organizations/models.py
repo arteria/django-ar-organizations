@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
-from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink, get_model
+from django.db.models import permalink
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
@@ -14,17 +12,15 @@ from jsonfield import JSONField
 
 from organizations.managers import OrgManager, ActiveOrgManager
 
+from compat import get_user_model as compat_get_user_model
+
 
 def get_user_model():
     """
     Returns the chosen user model as a class. This functionality won't be
     built-in until Django 1.5.
     """
-    try:
-        klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
-    except:
-        raise ImproperlyConfigured("Your user class, %s, is improperly defined" % USER_MODEL)
-    return klass
+    return compat_get_user_model()
 
 
 @python_2_unicode_compatible
