@@ -22,6 +22,7 @@ setup(
     url='https://github.com/wellfire/django-organizations/',
     license='BSD License',
     platforms=['OS Independent'],
+    install_requires=open('requirements.txt').read().split('\n'),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -30,12 +31,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Framework :: Django',
-    ],
-    install_requires=[
-        'Django>=1.4',
-        'django-extensions>=0.9',
-        'django-compat>=1.0.2',
-        'jsonfield>=1.0.2',
     ],
     # test_suite='tests.runtests.runtests',
     include_package_data=True,
