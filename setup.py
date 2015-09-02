@@ -19,7 +19,7 @@ setup(
     version=app.__version__,
     description='Group accounts for Django',
     long_description=long_description(),
-    url='https://github.com/wellfire/django-organizations/',
+    url='https://github.com/arteria/django-ar-organizations/',
     license='BSD License',
     platforms=['OS Independent'],
     install_requires=open('requirements.txt').read().split('\n'),
