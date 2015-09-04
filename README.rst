@@ -117,18 +117,22 @@ There are three models:
 
 The underlying organizations API is simple::
 
-    >>> chris = User.objects.get(username="chris")
-    >>> soundgarden = create_organization(chris, "Soundgarden")
-    >>> soundgarden.is_user(chris)
+    >>> from compat import get_user_model
+    >>> from organizations.utils import create_organization
+    >>> 
+    >>> User = get_user_model()
+    >>> chris = User.objects.create(username="chris")
+    >>> soundgarden = create_organization(chris, "Soundgarden", "soundgarden")
+    >>> soundgarden.is_member(chris)
     True
     >>> soundgarden.is_admin(chris)
     True
     >>> soundgarden.owner.organization_user
     <OrganizationUser: Chris Cornell>
     >>> soundgarden.owner.organization_user.user
-    >>> <User: chris>
-    >>> audioslave = create_organization(chris, "Audioslave")
-    >>> tom = User.objects.get(username="tom")
+    <User: chris>
+    >>> audioslave = create_organization(chris, "Audioslave", "audioslave")
+    >>> tom = User.objects.create(username="tom")
     >>> audioslave.add_user(tom, is_admin=True)
     <OrganizationUser: Tom Morello>
 
