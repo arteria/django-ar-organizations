@@ -36,7 +36,7 @@ def custom_settings_for_current_org(request, kw, fallback):
     {% custom_settings_for_current_org request 'foo' 'bar' as custom_setting_kw %}
     {{ custom_setting_kw }}
     """
-    if not user or not user.is_authenticated():
+    if not request.user or not request.user.is_authenticated():
         return None
     return get_custom_settings_for_current_organization(request, kw, fallback)
 
