@@ -96,6 +96,17 @@ def get_current_organization(request):
     return org
 
 
+
+def get_custom_settings_for_current_organization(request, kw, fallback=None):
+    """
+    Helper to access custom settings
+    """
+    org = get_current_organization(request)
+    if org is None:
+        return fallback
+    return org.custom_settings.get(kw, fallback)
+
+
 def get_users_organizations(user):
     """
     Return a list of organizations for a given user

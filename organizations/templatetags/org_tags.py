@@ -4,6 +4,7 @@ from django import template
 
 from organizations.models import Organization
 from organizations.utils import get_users_organizations
+from organizations.utils import get_custom_settings_for_current_organization
 
 register = template.Library()
 
@@ -24,8 +25,20 @@ def users_organizations(user):
     """
     if not user or not user.is_authenticated():
         return None
-    else:
-        return get_users_organizations(user)
+    return get_users_organizations(user)
+
+@register.assignment_tag
+def custom_settings_for_current_org
+    """
+    Access custom settings in templates.
+
+    {% load org_tags %}
+    {% custom_settings_for_current_org request 'foo' 'bar' as custom_setting_kw %}
+    {{ custom_setting_kw }}
+    """
+    if not user or not user.is_authenticated():
+        return None
+    return get_custom_settings_for_current_organization(request, kw, fallback)
 
 
 @register.assignment_tag
