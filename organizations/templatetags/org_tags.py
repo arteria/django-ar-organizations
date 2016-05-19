@@ -28,7 +28,7 @@ def users_organizations(user):
     return get_users_organizations(user)
 
 @register.assignment_tag
-def custom_settings_for_current_org
+def custom_settings_for_current_org(request, kw, fallback):
     """
     Access custom settings in templates.
 
