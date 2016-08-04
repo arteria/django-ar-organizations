@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
-from django.core.exceptions import MultipleObjectsReturned
+from django.core.urlresolvers import reverse 
 
 
 
@@ -31,7 +30,7 @@ class OrganizationsMiddleware:
                 org = orgs.get(slug=org_slug)
             except Organization.DoesNotExist:
                 org = None
-            except MultipleObjectsReturned:
+            except Organization.MultipleObjectsReturned:
                 org = None
             if org:
                 set_current_organization_to_session(request, org)
