@@ -8,6 +8,8 @@ class OrgManager(models.Manager):
 
     def get_for_user(self, user):
         uid = user.id # bypass SimpleLazyObject error
+        if uid is None:
+            self.get_query_set().none()
         if django.VERSION < (1, 7):
             return self.get_query_set().filter(users=user)
         else:
