@@ -97,6 +97,22 @@ def get_current_organization(request):
     return org
 
 
+def get_current_organization_id(request):
+    """
+    Retuns the current organization ID.
+    """
+    multi_client = getattr(settings, 'AR_CRM_MULTI_CLIENT', True)
+    if not multi_client:
+        return None
+
+    try:
+        org_id = request.session.get('current_organization_id')
+    except KeyError:
+        org = get_current_organization(request)
+        org_id = getattr(org, 'id', None)
+
+    return org_id
+
 
 def get_custom_settings_for_current_organization(request, kw, fallback=None):
     """
