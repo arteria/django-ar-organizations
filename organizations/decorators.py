@@ -8,7 +8,6 @@ def organizations_member_required(function=None, redirect_field_name=REDIRECT_FI
     """
     Decorator for views that checks that the user is logged in if the current user is a member of an organisation,
     redirecting to the log-in page if necessary.
-    To activate the organisation check, set ORGANIZATIONS_MEMBER_REQUIRED = True in your project settings.
     """
 
     actual_decorator = user_passes_test(
@@ -25,7 +24,6 @@ def organizations_admin_required(function=None, redirect_field_name=REDIRECT_FIE
     """
     Decorator for views that checks that the user is logged in if the current user is a member of an organisation with admin rights,
     redirecting to the log-in page if necessary.
-    To activate the organisation check, set ORGANIZATIONS_MEMBER_REQUIRED = True in your project settings.
     """
 
     actual_decorator = user_passes_test(
