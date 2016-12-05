@@ -59,6 +59,7 @@ def set_current_organization_to_session(request, org):
             return
     # current_org not in session or not same values
     request.session['current_organization'] = org.slug
+    request.session['current_organization_id'] = org.id
     request.session['current_organization_modified'] = True
     request.session.modified = True
     return
