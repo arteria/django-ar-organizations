@@ -4,7 +4,7 @@ django-ar-organizations
 .. image:: https://travis-ci.org/arteria/django-ar-organizations.svg?branch=master
     :target: https://travis-ci.org/arteria/django-ar-organizations
 
-Note: If you still using a django version <1.8 you have to install django-extensions<1.7.0. django-extensions dropped support for django <1.8 since version 1.7.0.
+    Note: If you still using a django version <1.8 you have to install django-extensions<1.7.0. django-extensions dropped support for django <1.8 since version 1.7.0.
 
 
 This package is an adopted and adapted version of django-organizations (https://github.com/bennylope/django-organizations)!
