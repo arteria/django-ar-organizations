@@ -7,6 +7,12 @@ class OwnershipRequired(Exception):
     """
     pass
 
+class OrganizationRequired(Exception):
+    """
+    Exception to raise if no organization is given.
+    organization.
+    """
+    pass
 
 class OrganizationMismatch(Exception):
     """
