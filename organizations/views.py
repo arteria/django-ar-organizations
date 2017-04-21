@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render_to_response, redirect, render
-from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -11,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView, DeleteView, FormView)
 from django.conf import settings
+
+from compat import get_current_site
 
 from organizations.models import Organization
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin, MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
@@ -46,17 +47,17 @@ def switch_org(request):
     organizations = get_users_organizations(request.user)
     if not organizations:
         # fallback /auto-set
-        
+
         if getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', False):
             organization = Organization.objects.get(slug=getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
             organization.get_or_add_user(request.user, is_admin=False)
             set_current_organization_to_session(request, organization)
-            
+
             if next:
                 return HttpResponseRedirect(next + "?org=" + getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
             else:
                 return HttpResponseRedirect('/?org='+ getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
-                
+
         else:
             raise Exception("No Organization found for user: %s" % request.user)
     template_name = 'organizations/organization_switch.html'
