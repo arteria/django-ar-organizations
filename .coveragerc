@@ -1,2 +1,3 @@
 [run]
 source = organizations
+omit = organizations/tests/*
