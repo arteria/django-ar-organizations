@@ -3,7 +3,7 @@
 import uuid
 
 from django.conf import settings
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
@@ -103,7 +103,7 @@ class BaseBackend(object):
         headers = {'Reply-To': reply_to}
 
         kwargs.update({'sender': sender, 'user': user})
-        ctx = Context(kwargs, autoescape=False)
+        ctx = kwargs
 
         subject_template = loader.get_template(subject_template)
         body_template = loader.get_template(body_template)
@@ -130,13 +130,13 @@ class RegistrationBackend(BaseBackend):
         return reverse('registration_success')
 
     def get_urls(self):
-        return patterns('',
-            url(r'^complete/$', view=self.success_view,
+        return [
+            url(r'^complete/$', self.success_view,
                 name="registration_success"),
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-                view=self.activate_view, name="registration_register"),
-            url(r'^$', view=self.create_view, name="registration_create"),
-            )
+                self.activate_view, name="registration_register"),
+            url(r'^$', self.create_view, name="registration_create"),
+            ]
 
     def register_by_email(self, email, sender=None, request=None, **kwargs):
         """
@@ -208,10 +208,10 @@ class InvitationBackend(BaseBackend):
         return reverse('organization_list')
 
     def get_urls(self):
-        return patterns('',
+        return [
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-                view=self.activate_view, name="invitations_register"),
-            )
+                self.activate_view, name="invitations_register"),
+            ]
 
     def invite_by_email(self, email, sender=None, request=None, **kwargs):
         """Creates an inactive user with the information we know and then sends

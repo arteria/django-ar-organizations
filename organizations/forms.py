@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext_lazy as _
+
+from compat import get_current_site
 
 from organizations.models import Organization, OrganizationUser, get_user_model
 from organizations.utils import create_organization
