@@ -7,6 +7,9 @@ django-ar-organizations
 .. image:: https://coveralls.io/repos/github/arteria/django-ar-organizations/badge.svg?branch=master
     :target: https://coveralls.io/github/arteria/django-ar-organizations?branch=master
 
+.. image:: https://img.shields.io/pypi/v/django-ar-organizations.svg
+    :target: https://pypi.python.org/pypi/django-ar-organizations)
+
 This package is an adopted and adapted version of django-organizations (https://github.com/bennylope/django-organizations)!
 
 Add user-managed, multi-user groups to your Django project. Use
