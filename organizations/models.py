@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
+from django_extensions.db.fields import AutoSlugField
+from django_extensions.db.models import TimeStampedModel
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import permalink
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-from django_extensions.db.fields import AutoSlugField
-from django_extensions.db.models import TimeStampedModel
-
-from compat import user_model_label as USER_MODEL  # NOQA
-from jsonfield import JSONField
-
-from organizations.managers import OrgManager, ActiveOrgManager
 
 from compat import get_user_model as compat_get_user_model
+from compat import user_model_label as USER_MODEL  # NOQA
+from jsonfield import JSONField
+from organizations.managers import OrgManager, ActiveOrgManager
 
 
 def get_user_model():
