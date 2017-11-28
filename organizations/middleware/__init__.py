@@ -1,28 +1,29 @@
 # -*- coding: utf-8 -*-
-
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse 
-
-
-
+from django.core.urlresolvers import reverse
 
 from organizations.models import Organization
 from organizations.utils import set_current_organization_to_session, get_current_organization, skip_request
 
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    class MiddlewareMixin(object):
+        pass
 
-class OrganizationsMiddleware:
+
+class OrganizationsMiddleware(MiddlewareMixin):
     """
     Simple Middleware that redirects all request to the switch_org view
     if no current_organization is stored in request.session
 
     Skip the redirect by providing '?org=<slug>' as get parameter
     """
-
     def process_request(self, request):
-        
+
         if skip_request(request):
             return None
-        
+
         org_slug = request.GET.get('org')
         if org_slug:
             try:
