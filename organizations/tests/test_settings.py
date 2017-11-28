@@ -108,8 +108,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
             ],
             'loaders': [
-                    'django.template.loaders.filesystem.Loader',
-                    'django.template.loaders.app_directories.Loader',
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
             ],
         },
     },
@@ -128,9 +128,6 @@ INSTALLED_APPS = (
     'organizations',
 )
 
-
-#MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-#INSTALLED_APPS += ('debug_toolbar',)
 INTERNAL_IPS = ('127.0.0.1',)
 
 # A sample logging configuration. The only tangible logging
