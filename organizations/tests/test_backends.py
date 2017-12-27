@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 from django.core import mail
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.http import Http404, QueryDict
 from django.test import TestCase
@@ -12,6 +10,11 @@ from organizations.tests.utils import request_factory_login
 from organizations.backends.defaults import (BaseBackend, InvitationBackend,
         RegistrationBackend)
 from organizations.backends.tokens import RegistrationTokenGenerator
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 @override_settings(USE_TZ=True)

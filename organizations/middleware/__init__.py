@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
 
 from organizations.models import Organization
 from organizations.utils import set_current_organization_to_session, get_current_organization, skip_request
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 try:
     from django.utils.deprecation import MiddlewareMixin

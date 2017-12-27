@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 from django.shortcuts import render_to_response, redirect, render
-from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.utils.translation import ugettext as _
@@ -19,6 +17,11 @@ from organizations.forms import (OrganizationForm, OrganizationUserForm, Organiz
 from organizations.utils import create_organization
 from organizations.backends import invitation_backend, registration_backend
 from organizations.utils import get_users_organizations, set_current_organization_to_session
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 class BaseOrganizationList(ListView):

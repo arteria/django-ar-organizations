@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
-from django_extensions.db.fields import AutoSlugField
-from django_extensions.db.models import TimeStampedModel
-from django.core.urlresolvers import reverse
+from django.conf import settings
+from django.contrib.auth import get_user_model as origin_get_user_model
 from django.db import models
 from django.db.models import permalink
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from compat import get_user_model as compat_get_user_model
-from compat import user_model_label as USER_MODEL  # NOQA
+from django_extensions.db.fields import AutoSlugField
+from django_extensions.db.models import TimeStampedModel
 from jsonfield import JSONField
 from organizations.managers import OrgManager, ActiveOrgManager
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 def get_user_model():
@@ -18,7 +22,7 @@ def get_user_model():
     Returns the chosen user model as a class. This functionality won't be
     built-in until Django 1.5.
     """
-    return compat_get_user_model()
+    return origin_get_user_model()
 
 
 @python_2_unicode_compatible
@@ -35,7 +39,7 @@ class Organization(TimeStampedModel):
     slug = AutoSlugField(max_length=200, blank=False, editable=True,
             populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
-    users = models.ManyToManyField(USER_MODEL, through="OrganizationUser")
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
     custom_data = JSONField(blank=True, default={})
@@ -116,9 +120,8 @@ class OrganizationUser(TimeStampedModel):
     and the contrib.auth application.
 
     """
-    user = models.ForeignKey(USER_MODEL, related_name="organization_users")
-    organization = models.ForeignKey(Organization,
-            related_name="organization_users")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="organization_users", on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, related_name="organization_users", on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
 
     class Meta:
@@ -161,9 +164,8 @@ class OrganizationUser(TimeStampedModel):
 class OrganizationOwner(TimeStampedModel):
     """Each organization must have one and only one organization owner."""
 
-    organization = models.OneToOneField(Organization, related_name="owner")
-    organization_user = models.OneToOneField(OrganizationUser,
-            related_name="owned_organization")
+    organization = models.OneToOneField(Organization, related_name="owner", on_delete=models.CASCADE)
+    organization_user = models.OneToOneField(OrganizationUser, related_name="owned_organization", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("organization owner")

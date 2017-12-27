@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-
 import uuid
 
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.auth import authenticate, login
-from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
 from django.http import Http404
 from django.shortcuts import render, redirect
@@ -18,6 +16,11 @@ from organizations.backends.forms import (UserRegistrationForm,
 from organizations.models import get_user_model
 from organizations.utils import create_organization
 from organizations.utils import model_field_attr
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 # Backend classes should provide common interface

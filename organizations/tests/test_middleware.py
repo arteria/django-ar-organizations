@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase, RequestFactory
-from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.contrib.auth import get_user_model
 from django.http.response import HttpResponseRedirect
 
 from organizations.middleware import OrganizationsMiddleware
 from organizations.utils import create_organization
 
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
+
 
 class VisitorTrackingMiddlewareTestCase(TestCase):
     def setUp(self):
+        User = get_user_model()
         self.mw = OrganizationsMiddleware()
         self.factory = RequestFactory()
         self.unknown_user = User.objects.create_user(
