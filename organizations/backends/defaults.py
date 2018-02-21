@@ -7,12 +7,11 @@ from django.contrib.auth import authenticate, login
 from django.core.mail import EmailMessage
 from django.http import Http404
 from django.shortcuts import render, redirect
-from django.template import Context, loader
+from django.template import loader
 from django.utils.translation import ugettext as _
 
 from organizations.backends.tokens import RegistrationTokenGenerator
-from organizations.backends.forms import (UserRegistrationForm,
-        OrganizationRegistrationForm)
+from organizations.backends.forms import UserRegistrationForm, OrganizationRegistrationForm
 from organizations.models import get_user_model
 from organizations.utils import create_organization
 from organizations.utils import model_field_attr
