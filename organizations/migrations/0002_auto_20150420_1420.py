@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', django_extensions.db.fields.CreationDateTimeField(default=django.utils.timezone.now, verbose_name='created', editable=False, blank=True)),
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(default=django.utils.timezone.now, verbose_name='modified', editable=False, blank=True)),
-                ('organization', models.OneToOneField(related_name='owner', to='organizations.Organization')),
+                ('organization', models.OneToOneField(related_name='owner', to='organizations.Organization', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'organization owner',
@@ -34,8 +34,8 @@ class Migration(migrations.Migration):
                 ('created', django_extensions.db.fields.CreationDateTimeField(default=django.utils.timezone.now, verbose_name='created', editable=False, blank=True)),
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(default=django.utils.timezone.now, verbose_name='modified', editable=False, blank=True)),
                 ('is_admin', models.BooleanField(default=False)),
-                ('organization', models.ForeignKey(related_name='organization_users', to='organizations.Organization')),
-                ('user', models.ForeignKey(related_name='organization_users', to=settings.AUTH_USER_MODEL)),
+                ('organization', models.ForeignKey(related_name='organization_users', to='organizations.Organization', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(related_name='organization_users', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['organization', 'user'],
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='organizationowner',
             name='organization_user',
-            field=models.OneToOneField(related_name='owned_organization', to='organizations.OrganizationUser'),
+            field=models.OneToOneField(related_name='owned_organization', to='organizations.OrganizationUser', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='organization',
