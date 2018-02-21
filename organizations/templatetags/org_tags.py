@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django import template
 
 from organizations.models import Organization
@@ -15,7 +14,6 @@ def organization_users(context, org):
     return context
 
 
-@register.assignment_tag
 def users_organizations(user):
     """
     Returns all organizations, in wich the user is member.
@@ -27,7 +25,7 @@ def users_organizations(user):
         return None
     return get_users_organizations(user)
 
-@register.assignment_tag
+
 def custom_settings_for_current_org(request, kw, fallback):
     """
     Access custom settings in templates.
@@ -41,7 +39,6 @@ def custom_settings_for_current_org(request, kw, fallback):
     return get_custom_settings_for_current_organization(request, kw, fallback)
 
 
-@register.assignment_tag
 def orgname_for_slug(slug):
     """
     Returns organizations name for a given slug.
@@ -53,3 +50,12 @@ def orgname_for_slug(slug):
         return Organization.objects.get(slug=slug).name
     except Organization.DoesNotExist:
         return None
+
+try:
+    register.assignment_tag(users_organizations)
+    register.assignment_tag(custom_settings_for_current_org)
+    register.assignment_tag(orgname_for_slug)
+except AttributeError:
+    register.simple_tag(users_organizations)
+    register.simple_tag(custom_settings_for_current_org)
+    register.simple_tag(orgname_for_slug)
