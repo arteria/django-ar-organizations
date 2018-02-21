@@ -171,9 +171,15 @@ class RegistrationBackend(BaseBackend):
         """
         Initiates the organization and user account creation process
         """
-        if request.user.is_authenticated():
+        if callable(request.user.is_authenticated):
+            is_authenticated = request.user.is_authenticated()
+        else:
+            is_authenticated = request.user.is_authenticated
+        if is_authenticated:
             return redirect("organization_add")
+
         form = OrganizationRegistrationForm(request.POST or None)
+
         if form.is_valid():
             try:
                 user = self.user_model.objects.get(email=form.cleaned_data['email'])

@@ -77,7 +77,13 @@ def get_current_organization(request):
 
     current_org_slug = request.session.get('current_organization')
     org = None
-    if request.user.is_authenticated():
+
+    if callable(request.user.is_authenticated):
+        is_authenticated = request.user.is_authenticated()
+    else:
+        is_authenticated = request.user.is_authenticated
+
+    if is_authenticated:
         try:
             org = Organization.objects.get(users=request.user, slug=current_org_slug)
         except Organization.DoesNotExist:

@@ -41,7 +41,13 @@ class OrganizationsMiddleware(MiddlewareMixin):
                 set_current_organization_to_session(request, org)
 
         current_organization = get_current_organization(request)
-        if not request.path == reverse('organization_switch') and not current_organization and request.user.is_authenticated():
+
+        if callable(request.user.is_authenticated):
+            is_authenticated = request.user.is_authenticated()
+        else:
+            is_authenticated = request.user.is_authenticated
+
+        if not request.path == reverse('organization_switch') and not current_organization and is_authenticated:
             # skip the redirect and set current_organization if user is member of only one Organization
             url = reverse('organization_switch')
             url += "?next=%s" % request.path

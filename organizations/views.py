@@ -185,7 +185,12 @@ class OrganizationSignup(FormView):
     backend = registration_backend()
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if callable(request.user.is_authenticated):
+            is_authenticated = request.user.is_authenticated()
+        else:
+            is_authenticated = request.user.is_authenticated
+
+        if is_authenticated:
             return redirect('organization_add')
         return super(OrganizationSignup, self).dispatch(request, *args,
                 **kwargs)
