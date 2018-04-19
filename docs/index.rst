@@ -24,3 +24,9 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+
+Contributing
+============
+
+Anyone and everyone is welcome to contribute. Please take a moment to review the `guidelines for contributing
+<https://github.com/arteria/django-background-tasks/blob/master/CONTRIBUTING.md>`_.
