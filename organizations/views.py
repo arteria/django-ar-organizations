@@ -61,7 +61,9 @@ def switch_org(request):
                 return HttpResponseRedirect('/?org='+ getattr(settings, 'AUTO_ADD_USER_TO_ORG_ORGANIZATION', ''))
 
         else:
-            raise Exception("No Organization found for user: %s" % request.user)
+            template_name = 'organizations/organization_switch_error.html'
+            kwvars = {}
+            return render(request, template_name, kwvars)
     template_name = 'organizations/organization_switch.html'
     kwvars = {
         'organizations': organizations,
