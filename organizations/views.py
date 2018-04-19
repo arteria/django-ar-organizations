@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response, redirect, render
+from django.shortcuts import redirect, render
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.utils.translation import ugettext as _
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
-from django.views.generic import (ListView, DetailView, UpdateView, CreateView, DeleteView, FormView)
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 from django.conf import settings
 
 from compat import get_current_site
@@ -64,10 +63,11 @@ def switch_org(request):
         else:
             raise Exception("No Organization found for user: %s" % request.user)
     template_name = 'organizations/organization_switch.html'
-
-    return render_to_response(template_name, {'organizations': organizations,
-                                              'next': next,
-                                             }, context_instance=RequestContext(request))
+    kwvars = {
+        'organizations': organizations,
+        'next': next,
+    }
+    return render(request, template_name, kwvars)
 
 
 class BaseOrganizationDetail(OrganizationMixin, DetailView):
